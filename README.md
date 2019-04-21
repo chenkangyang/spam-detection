@@ -48,3 +48,6 @@ As a first step, we need to create a dictionary of words and their frequency. li
 
 ## 3. Feature extraction process
 为训练集的每一封邮件构建特征，每一封邮件的特征为一个3000维度的 word count vector. 每一个 word count vector 包含该邮件中3000个最常见的词的词频。
+
+
+over, 打算删库 -。-
