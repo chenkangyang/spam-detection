@@ -44,6 +44,8 @@ class KFoldWrapper(object):
     def _init_estimator(self, k):
         est_args = self.est_args.copy()
         est_name = "{}/{}".format(self.name, k)
+        # MNB does not have the "random_state" parameter
+        # if est_name != "MultinomialNB":
         est_args["random_state"] = self.random_state
         return self.est_class(est_name, est_args)
 
@@ -143,8 +145,8 @@ class KFoldWrapper(object):
             return
         for (eval_name, eval_metric) in eval_metrics:
             accuracy = eval_metric(y_true, y_proba)
-            # LOGGER.info("Accuracy({}.{}.{})={:.2f}%".format(est_name, y_name, eval_name, accuracy * 100.))
-            LOGGER.info("F1 ({}.{}.{})={:.2f}%".format(est_name, y_name, eval_name, accuracy * 100.))
+            LOGGER.info("Accuracy({}.{}.{})={:.2f}%".format(est_name, y_name, eval_name, accuracy * 100.))
+            # LOGGER.info("F1 ({}.{}.{})={:.2f}%".format(est_name, y_name, eval_name, accuracy * 100.))
 
     def predict_proba(self, X_test):
         assert 2 <= len(X_test.shape) <= 3, "X_test.shape should be n x k or n x n2 x k"

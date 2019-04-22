@@ -39,7 +39,6 @@ def calc_f1(y_true, y_pred, name, prefix=""):
     return f1
 
 
-
 def get_opt_layer_id(acc_list):
     """ Return layer id with max accuracy on training data """
     opt_layer_id = np.argsort(-np.asarray(acc_list), kind='mergesort')[0]
@@ -82,8 +81,8 @@ class CascadeClassifier(object):
         self.data_save_rounds = self.get_value("data_save_rounds", 0, int)
         if self.data_save_rounds > 0:
             assert self.data_save_dir is not None, "data_save_dir should not be null when data_save_rounds>0"
-        self.eval_metrics = [("predict", f1_pb)]
-        # self.eval_metrics = [("predict", accuracy_pb)]
+        # self.eval_metrics = [("predict", f1_pb)]
+        self.eval_metrics = [("predict", accuracy_pb)]
         self.estimator2d = {}
         self.opt_layer_num = -1
         # LOGGER.info("\n" + json.dumps(ca_config, sort_keys=True, indent=4, separators=(',', ':')))
@@ -247,13 +246,13 @@ class CascadeClassifier(object):
                     if train_config.keep_model_in_mem:
                         self._set_estimator(layer_id, ei, est)
                 y_train_proba_li /= len(self.est_configs)
-                # train_avg_acc = calc_accuracy(y_train, np.argmax(y_train_proba_li, axis=1), 'layer_{} - train.classifier_average'.format(layer_id))
-                train_avg_acc = calc_f1(y_train, np.argmax(y_train_proba_li, axis=1), 'layer_{} - train.classifier_average'.format(layer_id))
+                train_avg_acc = calc_accuracy(y_train, np.argmax(y_train_proba_li, axis=1), 'layer_{} - train.classifier_average'.format(layer_id))
+                # train_avg_acc = calc_f1(y_train, np.argmax(y_train_proba_li, axis=1), 'layer_{} - train.classifier_average'.format(layer_id))
                 train_acc_list.append(train_avg_acc)
                 if n_tests > 0:
                     y_test_proba_li /= len(self.est_configs)
-                    # test_avg_acc = calc_accuracy(y_test, np.argmax(y_test_proba_li, axis=1), 'layer_{} - test.classifier_average'.format(layer_id))
-                    test_avg_acc = calc_f1(y_test, np.argmax(y_test_proba_li, axis=1), 'layer_{} - test.classifier_average'.format(layer_id))
+                    test_avg_acc = calc_accuracy(y_test, np.argmax(y_test_proba_li, axis=1), 'layer_{} - test.classifier_average'.format(layer_id))
+                    # test_avg_acc = calc_f1(y_test, np.argmax(y_test_proba_li, axis=1), 'layer_{} - test.classifier_average'.format(layer_id))
                     test_acc_list.append(test_avg_acc)
                 else:
                     test_acc_list.append(0.0)
@@ -265,10 +264,10 @@ class CascadeClassifier(object):
                 # early stop
                 if self.early_stopping_rounds > 0 and layer_id - opt_layer_id >= self.early_stopping_rounds:
                     # log and save final result (opt layer)
-                    # LOGGER.info("[Result][Optimal Level Detected] opt_layer_num={}, accuracy_train={:.2f}%, accuracy_test={:.2f}%".format(
-                        # opt_layer_id + 1, train_acc_list[opt_layer_id], test_acc_list[opt_layer_id]))
-                    LOGGER.info("[Result][Optimal Level Detected] opt_layer_num={}, f1_train={:.2f}%, f1_test={:.2f}%".format(
+                    LOGGER.info("[Result][Optimal Level Detected] opt_layer_num={}, accuracy_train={:.2f}%, accuracy_test={:.2f}%".format(
                         opt_layer_id + 1, train_acc_list[opt_layer_id], test_acc_list[opt_layer_id]))
+                    # LOGGER.info("[Result][Optimal Level Detected] opt_layer_num={}, f1_train={:.2f}%, f1_test={:.2f}%".format(
+                        # opt_layer_id + 1, train_acc_list[opt_layer_id], test_acc_list[opt_layer_id]))
                     if data_save_dir is not None:
                         self.save_data( data_save_dir, opt_layer_id, *opt_datas)
                     # remove unused model
@@ -283,10 +282,10 @@ class CascadeClassifier(object):
                     self.save_data(data_save_dir, layer_id, *opt_datas)
                 # inc layer_id
                 layer_id += 1
-            # LOGGER.info("[Result][Reach Max Layer] opt_layer_num={}, accuracy_train={:.2f}%, accuracy_test={:.2f}%".format(
-            #     opt_layer_id + 1, train_acc_list[opt_layer_id], test_acc_list[opt_layer_id]))
-            LOGGER.info("[Result][Reach Max Layer] opt_layer_num={}, f1_train={:.2f}%, f1_test={:.2f}%".format(
+            LOGGER.info("[Result][Reach Max Layer] opt_layer_num={}, accuracy_train={:.2f}%, accuracy_test={:.2f}%".format(
                 opt_layer_id + 1, train_acc_list[opt_layer_id], test_acc_list[opt_layer_id]))
+            # LOGGER.info("[Result][Reach Max Layer] opt_layer_num={}, f1_train={:.2f}%, f1_test={:.2f}%".format(
+                # opt_layer_id + 1, train_acc_list[opt_layer_id], test_acc_list[opt_layer_id]))
             if data_save_dir is not None:
                 self.save_data(data_save_dir, self.max_layers - 1, *opt_datas)
             self.opt_layer_num = self.max_layers

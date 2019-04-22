@@ -7,8 +7,7 @@ ATTN: This package is free for academic usage. You can run it at your own risk. 
 ATTN2: This package was developed by Mr.Ji Feng(fengj@lamda.nju.edu.cn). The readme file and demo roughly explains how to use the codes. For any problem concerning the codes, please feel free to contact Mr.Feng. 
 """
 from .base_estimator import BaseClassifierWrapper
-from .sklearn_estimators import GCSGDClassifier,GCLR, GCExtraTreesClassifier, GCRandomForestClassifier, GCXGBClassifier, GCDT
-#from .xgb_estimator import GCXGBClassifier
+from .sklearn_estimators import GCSGDClassifier, GCExtraTreesClassifier, GCRandomForestClassifier, GCXGBClassifier, GCDT, GCMNB, GCSVC, GCLR
 from .kfold_wrapper import KFoldWrapper
 
 def get_estimator_class(est_type):
@@ -18,14 +17,16 @@ def get_estimator_class(est_type):
         return GCRandomForestClassifier
     if est_type == "LogisticRegression":
         return GCLR
+    if est_type == "MultinomialNB":
+        return GCMNB
+    if est_type == "SVC":
+        return GCSVC
     if est_type == "DecisionTreeClassifier":
         return GCDT
     if est_type == "SGDClassifier":
         return GCSGDClassifier
     if est_type == "XGBClassifier":
         return GCXGBClassifier
-    #if est_type == "XGBClassifier":
-    #    return GCXGBClassifier
     raise ValueError('Unkown Estimator Type, est_type={}'.format(est_type))
 
 def get_estimator(name, est_type, est_args):
