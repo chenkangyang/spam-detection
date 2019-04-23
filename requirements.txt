@@ -12,3 +12,4 @@ simplejson
 tensorflow
 xgboost
 nltk==3.4.1
+seaborn
