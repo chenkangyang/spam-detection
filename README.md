@@ -2,7 +2,6 @@
 
 It uses machine learning models to predict whether a term is spam. 
 
----
 
 <!-- 推特Spam用户检测
 ```
@@ -35,7 +34,7 @@ conduct our experiments on
 - UCI-youtube
 - UCI-sms
 
-## 文本处理方法 [TF-IDF](https://www.cnblogs.com/nxf-rabbit75/p/9353212.html)
+## 文本处理方法1 [TF-IDF](https://www.cnblogs.com/nxf-rabbit75/p/9353212.html)
 
 TF-IDF（term frequency–inverse document frequency）是一种用于资讯检索与文本挖掘的常用加权技术。TF-IDF是一种统计方法，用以评估一字词对于一个文件集或一个语料库中的其中一份文件的重要程度。字词的重要性随着它在文件中出现的次数成正比增加，但同时会随着它在语料库中出现的频率成反比下降。TF-IDF加权的各种形式常被搜索引擎应用，作为文件与用户查询之间相关程度的度量或评级。除了TF-IDF以外，互联网上的搜索引擎还会使用基于连结分析的评级方法，以确定文件在搜寻结果中出现的顺序。
 1. TF
@@ -46,3 +45,40 @@ IDF: 逆向文件频率，用于衡量一个词的重要性。计算词频TF的�
 > ID(t) = log(总文档数/词t出现的文档数)
 
 > TF-IDF:上面两个乘起来，就是TF-IDF, TF-IDF = TF * IDF
+
+
+## 文本处理方法2 Count Vectorizer
+词频字典
+
+
+## 文本处理方法3 文本序列化 Text to Word Sequence
+以上文本预处理方式不适用于LSTM
+
+LSTM的文本预处理方法为：*句子序列化*
+
+举例：
+```
+from keras.preprocessing.text import Tokenizer
+text1='Some ThING to eat !'
+text2='some thing to drink .'
+texts=[text1,text2]
+print(texts)
+#out:['Some ThING to eat !', 'some thing to drink .']
+tokenizer = Tokenizer(num_words=100) #num_words:None或整数,处理的最大单词数量。少于此数的单词丢掉
+tokenizer.fit_on_texts(texts)
+print( tokenizer.word_counts) 
+#out:OrderedDict([('some', 2), ('thing', 2), ('to', 2), ('eat', 1), ('drink', 1)])
+print( tokenizer.word_index) 
+#out:{'some': 1, 'thing': 2, 'to': 3, 'eat': 4, 'drink': 5}
+sequences = tokenizer.texts_to_sequences(texts)
+word_index = tokenizer.word_index
+print(sequences)
+#out:[[1, 2, 3, 4], [1, 2, 3, 5]] 转换为序列，注意这里句子等长，所以输出一样，但是不等长句子输出的长度是不一样的
+print('Found %s unique tokens.' % len(word_index))
+#out:Found 5 unique tokens.
+SEQ_LEN = 10
+data = pad_sequences(sequences, maxlen=SEQ_LEN)
+print(data)
+#out:[[0 0 0 0 0 0 1 2 3 4]
+# [0 0 0 0 0 0 1 2 3 5]]
+```
