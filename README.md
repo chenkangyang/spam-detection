@@ -21,7 +21,7 @@ http://homepages.dcc.ufmg.br/~fabricio/spammerscollection.html
 
 }
 ```
- 
+
  CMU-15688-Project: Twitter Spam Classification: http://www.datasciencecourse.org/
 
 https://nbviewer.jupyter.org/github/sathwikcm/CMU-15688-Project/blob/master/Twitter%20Spam%20Classification%20Notebook.ipynb
@@ -58,7 +58,7 @@ LSTM的文本预处理方法为：*句子序列化*
 每个句子的每个单词 ——> 该单词在词频字典中的index
 
 举例如下：
-```
+```python
 from keras.preprocessing.text import Tokenizer
 text1='Some ThING to eat !'
 text2='some thing to drink .'
