@@ -15,6 +15,29 @@ The text processing methods including:
 
 
 
+Examples of building the word count vector:
+
+```python
+from sklearn.feature_extraction.text import CountVectorizer
+corpus = [
+     'This is the first document.',
+     'This document is the second document.',
+     'And this is the third one.',
+     'Is this the first document?',
+]
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(corpus)
+print(vectorizer.vocabulary_)
+# {'this': 8, 'is': 3, 'the': 6, 'first': 2, 'document': 1, 'second': 5, 'and': 0, 'third': 7, 'one': 4}
+print(X.toarray())
+# out: [[0 1 1 1 0 0 1 0 1]
+#		[0 2 0 1 0 1 1 0 1]
+#   	[1 0 0 1 1 0 1 1 1]
+#       [0 1 1 1 0 0 1 0 1]]
+```
+
+
+
 Examples of Texts to sequences approach：
 ```python
 from keras.preprocessing.text import Tokenizer
