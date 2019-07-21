@@ -2,18 +2,18 @@
 
 It uses machine learning models to predict whether a term is spam. 
 
+## Datasets
 The experiments are performed on the following two data sets
 
 - UCI-youtube
 - UCI-sms
 
+## Text Processing
 The text processing methods including:
 - Remove the stop words
 - Build word count vector
 - TF-IDF
 - Texts to sequences
-
-
 
 Examples of building the word count vector:
 
@@ -64,3 +64,20 @@ print(data)
 #out:[[0 0 0 0 0 0 1 2 3 4]
 # [0 0 0 0 0 0 1 2 3 5]]
 ```
+
+## Tree
+```
+.
+├── [1.9K]  README.md
+├── [ 30K]  ResultsRecord.xlsx
+├── [ 160]  code
+├── [ 352]  data
+├── [ 448]  gcforest
+├── [1.1K]  img
+├── [ 704]  notebook
+├── [ 640]  pkl
+└── [ 190]  requirements.txt
+```
+
+[data & pkl](https://pan.baidu.com/s/1J8haDejjYFficeNw4-UTew)
+Extraction code: vt1f
